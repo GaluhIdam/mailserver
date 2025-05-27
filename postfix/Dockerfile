@@ -6,7 +6,7 @@ RUN apt-get update && \
     echo "postfix postfix/main_mailer_type string 'Internet Site'" | debconf-set-selections && \
     apt-get install -y postfix libsasl2-modules default-mysql-client
 
-
+COPY master.cf /etc/postfix/master.cf
 COPY main.cf /etc/postfix/main.cf
 COPY mysql-virtual-domains.cf /etc/postfix/mysql-virtual-domains.cf
 COPY mysql-virtual-mailboxes.cf /etc/postfix/mysql-virtual-mailboxes.cf

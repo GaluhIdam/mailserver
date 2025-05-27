@@ -8,4 +8,28 @@ virtual_mailbox_domains = mysql:/etc/postfix/mysql-virtual-domains.cf
 virtual_mailbox_maps = mysql:/etc/postfix/mysql-virtual-mailboxes.cf
 virtual_alias_maps = mysql:/etc/postfix/mysql-virtual-aliases.cf
 
+virtual_mailbox_base = /var/mail/vhosts
+virtual_uid_maps = static:5000
+virtual_gid_maps = static:5000
 virtual_transport = lmtp:unix:private/dovecot-lmtp
+
+# TLS / SASL
+smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+smtpd_use_tls=yes
+smtpd_tls_auth_only=yes
+smtp_tls_security_level=may
+smtpd_tls_security_level=may
+
+# SASL
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_local_domain = $myhostname
+
+# Recipient restrictions
+smtpd_recipient_restrictions =
+    permit_sasl_authenticated,
+    permit_mynetworks,
+    reject_unauth_destination
