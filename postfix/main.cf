@@ -1,0 +1,11 @@
+myhostname = existera.id
+myorigin = /etc/mailname
+mydestination = localhost
+inet_interfaces = all
+inet_protocols = ipv4
+
+virtual_mailbox_domains = mysql:/etc/postfix/mysql-virtual-domains.cf
+virtual_mailbox_maps = mysql:/etc/postfix/mysql-virtual-mailboxes.cf
+virtual_alias_maps = mysql:/etc/postfix/mysql-virtual-aliases.cf
+
+virtual_transport = lmtp:unix:private/dovecot-lmtp

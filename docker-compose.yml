@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mariadb:10.5
+    container_name: mail-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: mailserver
+      MYSQL_USER: mailuser
+      MYSQL_PASSWORD: mailpass
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      - mailnet
+
+  postfix:
+    build: ./postfix
+    container_name: mail-postfix
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "25:25"
+      - "587:587"
+    volumes:
+      - ./postfix:/etc/postfix
+      - maildata:/var/mail
+    environment:
+      - DOMAIN=existera.id
+      - MYSQL_HOST=mail-mysql
+      - MYSQL_USER=mailuser
+      - MYSQL_PASSWORD=mailpass
+      - MYSQL_DB=mailserver
+    networks:
+      - mailnet
+
+  dovecot:
+    image: dovecot/dovecot
+    container_name: mail-dovecot
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "143:143"
+      - "993:993"
+    volumes:
+      - ./dovecot:/etc/dovecot
+      - maildata:/var/mail
+    networks:
+      - mailnet
+
+volumes:
+  maildata:
+
+networks:
+  mailnet:

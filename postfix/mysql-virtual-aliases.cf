@@ -1,0 +1,5 @@
+user = mailuser
+password = mailpass
+hosts = mail-mysql
+dbname = mailserver
+query = SELECT destination FROM virtual_aliases WHERE source='%s'
