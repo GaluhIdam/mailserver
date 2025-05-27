@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   mysql:
@@ -46,7 +46,7 @@ services:
       - "143:143"
       - "993:993"
     volumes:
-      - ./dovecot:/etc/dovecot
+      - ./dovecot/conf:/etc/dovecot
       - maildata:/var/mail
     networks:
       - mailnet
